@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +30,14 @@ jobs:
           push: true
           tags: |
             mohdahmad12870/wisecow:latest
+
+      - name: Setup kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+
+      - name: Deploy Wisecow to Kubernetes
+        run: kubectl apply -f wisecow-nodeport.yaml
+
+            
 
