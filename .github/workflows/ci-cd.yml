@@ -27,7 +27,7 @@ jobs:
 
       # 4. Build Docker image
       - name: Build Docker image
-        run: docker build -t wisecow:latest .
+        run: docker build -t mohdahmad12870/wisecow:latest .
 
       # 5. Install kind and kubectl
       - name: Install kind and kubectl
