@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wisecow-service
+spec:
+  type: ClusterIP
+  selector:
+    app: wisecow
+  ports:
+    - protocol: TCP
+      port: 4499        # Service port exposed internally
+      targetPort: 4499  # Pod container port
+

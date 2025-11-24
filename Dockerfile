@@ -1,22 +1,15 @@
 
-FROM debian:bookworm-slim
-
-ENV DEBIAN_FRONTEND=noninteractive
-
- #Install all prerequisites
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        bash \
-        curl \
-        netcat-openbsd \
-        fortune \
-        cowsay && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+FROM python:3.9-slim
 
 WORKDIR /app
-COPY wisecow.sh /app/wisecow.sh
-RUN chmod +x /app/wisecow.sh
+
+COPY . .
+
+# Install dependencies and bash
+RUN apt-get update && apt-get install -y bash \
+    && pip install --no-cache-dir cowpy flask \
+    && chmod +x wisecow.sh
 
 EXPOSE 4499
-ENTRYPOINT ["/bin/bash", "/app/wisecow.sh"]
 
+CMD ["bash", "wisecow.sh"]

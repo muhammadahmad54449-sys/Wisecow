@@ -1,6 +1,3 @@
 #!/bin/bash
-echo "Wisecow app is running..."
-while true; do
-    sleep 60
-done
-
+echo "Starting Wisecow app..."
+python3 app.py
