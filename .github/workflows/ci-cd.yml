@@ -1,5 +1,4 @@
 name: Wisecow CI/CD Pipeline
-
 on:
   push:
     branches:
@@ -11,14 +10,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build and Push Docker Image
+        id: docker_build
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -38,8 +41,18 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
 
-      - name: Deploy Wisecow to Kubernetes
+      - name: Test kubectl
+        run: kubectl get nodes
+
+      - name: Apply Kubernetes manifests
         run: kubectl apply -f wisecow-nodeport.yaml
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/wisecow-deployment \
+            wisecow-container=mohdahmad12870/wisecow:latest
+          kubectl rollout status deployment/wisecow-deployment
+
 
             
 
