@@ -32,7 +32,7 @@ jobs:
         context: .
         file: Dockerfile
         push: true
-        tags: mohdahmad12870/wisecow:latest
+        tags: wisecow:latest
 
 
 
